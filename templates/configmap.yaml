@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "service.fullname" . }}-config
+  namespace: {{ .Release.namespace }}
+  labels: {{- include "service.labels.standard" . | nindent 4 }}
+  {{- $files := .Files }}
+data:
+{{ (.Files.Glob "*.conf").AsConfig | indent 2 }}

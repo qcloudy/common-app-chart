@@ -1,0 +1,86 @@
+apiVersion: {{ include "capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "service.fullname" .}}
+  namespace: {{ .Release.namespace }}
+  labels: {{- include "service.labels.standard" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  {{- end }}
+  {{- if .Values.updateStrategy }}
+  strategy: {{- tpl (toYaml .Values.updateStrategy) $ | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels: {{- include "service.labels.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "service.labels.standard" . | nindent 8 }}
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if .Values.hostAliases }}
+      hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ include "service.fullname" . }}
+        image: {{ include "common.images.image" (dict "imageRoot" .Values.image $) }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if $.Values.resources }}
+        resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 12 }}
+        {{- end }}
+        {{- if or .Values.env .Values.envSecrets }}
+        env: {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 12 }}
+        {{- end }}
+        {{- if .Values.envSecret }}
+        envFrom:
+          - secretRef:
+              name: {{ include "service.fullname" .}}
+        {{- end }}
+        {{- if .Values.containerCommand }}
+        command:
+          {{- range .Values.containerCommand }}
+          - {{ . | quote }}
+          {{- end }}
+        {{- end }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.targetPort }}
+          protocol: TCP
+        {{- if .Values.livenessProbe }}
+        livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.livenessProbe "context" $) | nindent 12 }}
+        {{- end }}
+        {{- if .Values.readinessProbe }}
+        readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.readinessProbe "context" $) | nindent 12 }}
+        {{- end }}
+        volumeMounts:
+        {{- if .Values.configPath }}
+        - name: config-volume
+          mountPath: {{ .Values.configPath }}
+        {{- end }}
+        {{- if .Values.extraVolumeMounts }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 8 }}
+        {{- end }}
+      volumes:
+      {{- if .Values.configPath }}
+      - name: config-volume
+        configMap:
+          name: {{ include "service.fullname" . }}-config
+      {{- end }}
+      {{- if .Values.extraVolumes }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 6 }}
+      {{- end }}
+      {{- include "common.images.renderPullSecrets" (dict "images" (list "global" .Values.global) "context" $) | nindent 6 }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
+      {{- end }}

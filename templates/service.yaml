@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Release.namespace }}
+  labels: {{- include "service.labels.standard" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "LoadBalancer" }}
+  {{- if .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- end }}
+  {{- if (or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")) }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy | quote }}
+  {{- end }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      {{- if (and (eq .Values.service.type "NodePort") (not (empty .Values.service.nodePort)))}}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- else if eq .Values.service.type "ClusterIP" }}
+      nodePort: null
+      {{- end }}
+{{- if .Values.service.extraPorts }}
+  {{- tpl (toYaml .Values.service.extraPorts) $ | nindent 4 }}
+{{- end }}
+  selector: {{- include "service.labels.matchLabels" . | nindent 4 }}
