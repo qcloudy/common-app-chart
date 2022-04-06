@@ -12,6 +12,8 @@ image:
 
 replicaCount: 1
 
+serviceAccountName:
+
 revisionHistoryLimit: 5
 
 terminationGracePeriodSeconds: 60
