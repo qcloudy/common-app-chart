@@ -54,8 +54,8 @@ spec:
         - name: http
           containerPort: {{ .Values.service.targetPort }}
           protocol: TCP
-        {{- if .Values.service.extraPorts }}
-        {{- include "common.tplvalues.render" (dict "value" .Values.service.extraPorts "context" $) | nindent 8 }}
+        {{- if .Values.extraContainerPorts }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.extraContainerPorts "context" $) | nindent 8 }}
         {{- end }}
         {{- if .Values.livenessProbe }}
         livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.livenessProbe "context" $) | nindent 12 }}

@@ -20,6 +20,13 @@ terminationGracePeriodSeconds: 60
 
 containerPort: 8080
 
+## @param extraContainerPorts - Extra ports to expose in the container
+## extraContainerPorts:
+##   - name: http
+##     containerPort: 9090
+##     protocol: TCP
+extraContainerPorts:
+
 service:
   type: ClusterIP
   targetPort: 8080
