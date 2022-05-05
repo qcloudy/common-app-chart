@@ -48,10 +48,10 @@ ingress:
     - host: common.example.com
       paths:
         - /
-  tls:
-    - secretName: tls-secret-name
-      hosts:
-        - common.example.com
+  #tls:
+  #  - secretName: tls-secret-name
+  #    hosts:
+  #      - common.example.com
 
   ## @param ingress.pathType - Ingress Path type
   ##
