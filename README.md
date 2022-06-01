@@ -63,6 +63,7 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `updateStrategy.type`                  | Set up update strategy for app installation.                                                                                                              | `RollingUpdate`          |
 | `hostAliases`                          | Add deployment host aliases                                                                                                                               | `[]`                     |
 | `env`                                  | env vars to configure app                                                                                                                                 | `nil`                    |
+| `configMapFile` | config file name or wildcard pattern in chart/config directory | `nil` |
 | `envSecret`                            | Enable/Disabke ingest from secret containing extra env vars to configure app (in case of sensitive data)                                                  | `false`                  |
 | `extraVolumes`                         | Array to add extra volumes. Requires setting `extraVolumeMounts`                                                                                          | `nil`                    |
 | `extraVolumeMounts`                    | Array to add extra mounts. Normally used with `extraVolumes`                                                                                              | `nil`                    |
@@ -156,6 +157,18 @@ initContainers:
 ### Adding extra volumes
 
 The common-app-chart chart supports mounting extra volumes (either PVCs, secrets or configmaps) by using the `extraVolumes` and `extraVolumeMounts` property. This can be combined with advanced operations like adding extra init containers and sidecars.
+
+### Adding config files to configMap
+
+> **Tip**: Before using this feature, you need to copy your files in chart/config directory!!!
+
+```sh
+cp src/main/resources/application.yml chart/config/application.yml
+```
+
+```yaml
+configMapFile: "application.yml"
+```
 
 ## Authors
 

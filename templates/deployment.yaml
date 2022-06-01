@@ -18,7 +18,9 @@ spec:
     metadata:
       labels: {{- include "service.labels.standard" . | nindent 8 }}
       annotations:
+        {{- if .Values.configMapFile }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- end }}
     spec:
       {{- if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccountName }}

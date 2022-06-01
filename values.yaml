@@ -102,6 +102,23 @@ affinity: {}
 ##
 env:
 
+## @param configMapFile - Filename or matching wildcard pattern
+## For example:
+## configMapFile: "application.yml"
+## 
+## or multiple files:
+## configMapFile: "**.json"
+##
+## Before using this param, you need to COPY all files into "config/" chart directory
+##
+## For example in CI/CD:
+## cp src/main/resources/application.yml common-app-chart/config/
+##
+## or multiple files:
+## cp src/main/resources/*.json common-app-chart/config/
+## 
+configMapFile:
+
 ## @param envSecret - Enable/Disable ingesting envs from secret containing extra env vars (in case of sensitive data)
 ## You must to create secret with name of service before
 ##
