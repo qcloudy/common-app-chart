@@ -53,7 +53,7 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | Name                      | Description                                     | Value |
 | ------------------------- | ----------------------------------------------- | ----- |
 | `secretsManager.bankVault.enabled` | Enable Banzaicloud Vault Secrets Mutating Webhook | `false`  |
-| `secretsManager.bankVault.annotations` | Banzaicloud Vault Secrets Mutating Webhook configure annotations | `nil`  |
+| `secretsManager.bankVault.annotations` | Banzaicloud Vault Secrets Mutating Webhook configure annotations. [Documentation](https://banzaicloud.com/docs/bank-vaults/mutating-webhook/annotations/) | `nil`  |
 
 ### App parameters
 
