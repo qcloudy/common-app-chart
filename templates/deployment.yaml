@@ -18,12 +18,20 @@ spec:
     metadata:
       labels: {{- include "service.labels.standard" . | nindent 8 }}
       annotations:
+        {{- if .Values.secretsManager.bankVault.enabled }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.secretsManager.bankVault.annotations "context" $) | nindent 10 }}
+        {{- end }}
         {{- if .Values.configMapFile }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- end }}
     spec:
-      {{- if .Values.serviceAccountName }}
-      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "service.fullname" .}}
+      {{- end }}
+      {{- if not .Values.serviceAccount.create }}
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
       {{- end }}
       {{- if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
@@ -36,15 +44,11 @@ spec:
         image: {{ include "common.images.image" (dict "imageRoot" .Values.image $) }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- if $.Values.resources }}
-        resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 12 }}
+        resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 10 }}
         {{- end }}
-        {{- if or .Values.env .Values.envSecrets }}
-        env: {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 12 }}
-        {{- end }}
-        {{- if .Values.envSecret }}
-        envFrom:
-          - secretRef:
-              name: {{ include "service.fullname" .}}
+        {{- if or .Values.env }}
+        env:
+        {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
         {{- end }}
         {{- if .Values.containerCommand }}
         command:
@@ -65,6 +69,7 @@ spec:
         {{- if .Values.readinessProbe }}
         readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.readinessProbe "context" $) | nindent 12 }}
         {{- end }}
+        {{- if or .Values.configPath .Values.extraVolumeMounts }}
         volumeMounts:
         {{- if .Values.configPath }}
         - name: config-volume
@@ -73,6 +78,8 @@ spec:
         {{- if .Values.extraVolumeMounts }}
         {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 8 }}
         {{- end }}
+        {{- end }}
+      {{- if or .Values.configPath .Values.extraVolumes }}
       volumes:
       {{- if .Values.configPath }}
       - name: config-volume
@@ -81,6 +88,7 @@ spec:
       {{- end }}
       {{- if .Values.extraVolumes }}
       {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 6 }}
+      {{- end }}
       {{- end }}
       {{- include "common.images.renderPullSecrets" (dict "images" (list "global" .Values.global) "context" $) | nindent 6 }}
       {{- if .Values.nodeSelector }}

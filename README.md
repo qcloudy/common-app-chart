@@ -40,7 +40,6 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
 | `global.storageClass`     | Global StorageClass for Persistent Volume(s)    | `nil` |
 
-
 ### Common parameters
 
 | Name               | Description                                                                                               | Value |
@@ -49,8 +48,14 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `nameOverride`     | String to partially override service.fullname template with a string (will prepend the release name)      | `nil` |
 | `fullnameOverride` | String to fully override service.fullname template with a string                                          | `nil` |
 
+### Secrets Management parameters
 
-### app parameters
+| Name                      | Description                                     | Value |
+| ------------------------- | ----------------------------------------------- | ----- |
+| `secretsManager.bankVault.enabled` | Enable Banzaicloud Vault Secrets Mutating Webhook | `false`  |
+| `secretsManager.bankVault.annotations` | Banzaicloud Vault Secrets Mutating Webhook configure annotations. [Documentation](https://banzaicloud.com/docs/bank-vaults/mutating-webhook/annotations/) | `nil`  |
+
+### App parameters
 
 | Name                                   | Description                                                                                                                                               | Value                    |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
@@ -59,7 +64,10 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `image.tag`                            | App image tag (immutable tags are recommended)                                                                                                            | `nil`                    |
 | `image.pullPolicy`                     | App image pull policy                                                                                                                                     | `Always`                 |
 | `replicaCount`                         | Number of replicas of the app Pod                                                                                                                         | `1`                      |
-| `serviceAccountName`                   | Service Account Name                                                                                                                                      | `nil`                    |
+| `serviceAccount.create`                   | Create Service Account Name                                                                                                                                      | `false`                    |
+| `serviceAccount.name`                   | Use already existing Service Account Name                                                                                                                                      | `nil`                    |
+| `serviceAccount.annotations`                   | Add annotations to Service Account Name                                                                                                                                      | `{}`                    |
+| `serviceAccount.automountServiceAccountToken`                   | Automount Service Account token Name                                                                                                                                      | `true`                    |
 | `updateStrategy.type`                  | Set up update strategy for app installation.                                                                                                              | `RollingUpdate`          |
 | `hostAliases`                          | Add deployment host aliases                                                                                                                               | `[]`                     |
 | `env`                                  | env vars to configure app                                                                                                                                 | `nil`                    |
@@ -114,19 +122,29 @@ In case you want to add environment variables, you can use the `env` property.
 
 ```yaml
 env:
-  ELASTICSEARCH_VERSION: 6
-  LOG_LEVEL: debug
+  - name: ELASTICSEARCH_VERSION
+    value: "6"
+  - name: LOG_LEVEL
+    value: debug
 ```
 
-### How to use secret environment variables
+### How to use secret environment variables with Banzaicloud Vault Secrets Webhook
 
-Alternatively, you can use a a Secret with the environment variables. To do so, use the `envSecret` values.
+Alternatively, you can use a a Secret with the environment variables.
 
 ```yaml
-envSecret: true
-```
+secretsManagement:
+  bankVault:
+    enabled: true
+    annotations:
+      vault.security.banzaicloud.io/vault-addr: "https://vault:8200"
 
-Then you enable this parameter (by default it's = false), your deployment will mount all data variables from secret in the same namespace. So before deploy application, you must to create application secret with variables. Secret name must be {{ service.fullname }}.
+env:
+  - name: DB_PASSWORD
+    value: "vault:secrets/data/database#DB_PASSWORD"
+  - name: AUTH_TOKEN
+    value: "vault:secrets/data/example#AUTH_TOKEN"
+```
 
 ### Sidecars and Init Containers
 

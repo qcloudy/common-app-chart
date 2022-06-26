@@ -2,17 +2,29 @@ global:
   storageClass:
   imagePullSecrets: []
 
-nameOverride: common
-fullnameOverride: common
+secretsManager:
+  bankVault:
+    enabled: false
+    ## Banzaicloud bank-vaults mutating webhook annotations
+    ## https://banzaicloud.com/docs/bank-vaults/mutating-webhook/annotations/
+    annotations:
+      vault.security.banzaicloud.io/vault-addr: "https://vault:8200"
+
+nameOverride:
+fullnameOverride:
 
 image:
-  repository: common
-  tag: common
+  repository:
+  tag:
   pullPolicy: Always
 
 replicaCount: 1
 
-serviceAccountName:
+serviceAccount:
+  create: false
+  name:
+  annotations: {}
+  automountServiceAccountToken: true
 
 revisionHistoryLimit: 5
 
@@ -93,12 +105,20 @@ tolerations: []
 affinity: {}
 
 ## @param env - Array containing env vars to configure service
-## For example:
+##
+## Default envs example:
 ## env:
 ##   - name: DATABASE_URL
 ##     value: "mysql://127.0.0.1:3306"
 ##   - name: LOG_LEVEL
 ##     value: "debug"
+##
+## Secrets from Vault example:
+## env
+##   - name: DB_PASSWORD
+##     value: "vault:secrets/data/database#DB_PASSWORD"
+##   - name: AUTH_TOKEN
+##     value: "vault:secrets/data/example#AUTH_TOKEN"
 ##
 env:
 
@@ -118,11 +138,6 @@ env:
 ## cp src/main/resources/*.json common-app-chart/config/
 ## 
 configMapFile:
-
-## @param envSecret - Enable/Disable ingesting envs from secret containing extra env vars (in case of sensitive data)
-## You must to create secret with name of service before
-##
-envSecret: false
 
 ## @param extraVolumes - Array to add extra volumes. Requires setting `extraVolumeMounts`
 ## For example:
