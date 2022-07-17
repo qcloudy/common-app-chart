@@ -55,6 +55,16 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `secretsManager.bankVault.enabled` | Enable Banzaicloud Vault Secrets Mutating Webhook | `false`  |
 | `secretsManager.bankVault.annotations` | Banzaicloud Vault Secrets Mutating Webhook configure annotations. [Documentation](https://banzaicloud.com/docs/bank-vaults/mutating-webhook/annotations/) | `nil`  |
 
+### Autoscaling parameters (HPA)
+
+| Name                      | Description                                     | Value  |
+| ------------------------- | ----------------------------------------------- | -----  |
+| `autoscaling.enabled`     | Enable HPA                                      | `false`|
+| `autoscaling.minReplicas` | HPA Min replicas                                | `nil`  |
+| `autoscaling.maxReplicas` | HPA Max replicas                                | `nil`  |
+| `autoscaling.targetCPU`   | Target CPU utilization percentage               | `nil`  |
+| `autoscaling.targetMemory`| Target Memory utilization percentage            | `nil`  |
+
 ### App parameters
 
 | Name                                   | Description                                                                                                                                               | Value                    |
