@@ -5,16 +5,19 @@ metadata:
   name: {{ include "service.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
-  {{- if or .Values.ingress.annotations .Values.commonAnnotations .Values.ingress.certManager }}
-  annotations:
-    {{- if .Values.ingress.certManager }}
-    kubernetes.io/tls-acme: "true"
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
+  annotations:
     {{- if .Values.ingress.annotations }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.ingress.annotations "context" $) | nindent 4 }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.ingress.annotations "context" $) | nindent 4 }}
     {{- end }}
     {{- if .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.commonAnnotations }}
+    {{- if .Values.ingress.certManager }}
+    kubernetes.io/tls-acme: "true"
     {{- end }}
   {{- end }}
 spec:

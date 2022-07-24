@@ -10,26 +10,64 @@ secretsManager:
     annotations:
       vault.security.banzaicloud.io/vault-addr: "https://vault:8200"
 
+## @param nameOverride String to partially override nginx.fullname template (will maintain the release name)
+##
 nameOverride:
+
+## @param fullnameOverride String to fully override nginx.fullname template
+##
 fullnameOverride:
 
+## @param commonLabels Add labels to all the deployed resources
+##
+commonLabels: {}
+## @param commonAnnotations Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## App image version
+## @param image.registry app image registry
+## @param image.repository app image repository
+## @param image.tag app image tag (immutable tags are recommended)
+## @param image.pullPolicy app image pull policy
+##
 image:
   repository:
   tag:
   pullPolicy: Always
 
+## @param replicaCount Number of app replicas to deploy
+##
 replicaCount: 1
 
+## Pods Service Account
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+##
 serviceAccount:
+  ## @param serviceAccount.create Enable creation of ServiceAccount for app pod
+  ##
   create: false
+  ## @param serviceAccount.name The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the `names.fullname` template
   name:
+  ## @param serviceAccount.annotations Annotations for service account. Evaluated as a template.
+  ## Only used if `create` is `true`.
+  ##
   annotations: {}
+  ## @param serviceAccount.automountServiceAccountToken Auto-mount the service account token in the pod
+  ##
   automountServiceAccountToken: true
 
 revisionHistoryLimit: 5
 
+## @param terminationGracePeriodSeconds In seconds, time the given to the app pod needs to terminate gracefully
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+##
 terminationGracePeriodSeconds: 60
 
+## Configures the ports app listens on
+## @param containerPort Sets http port inside app container
+##
 containerPort: 8080
 
 ## @param extraContainerPorts - Extra ports to expose in the container
@@ -40,10 +78,18 @@ containerPort: 8080
 extraContainerPorts:
 
 service:
+  ## @param service.type Service type
+  ##
   type: ClusterIP
+  ## @param service.targetPort Service container port
+  ##
   targetPort: 8080
+  ## @param service.port Service port
+  ##
   port: 8080
-
+  ## @param service.annotations Service annotations
+  ##
+  annotations: {}
   ## @param service.extraPorts - Extra ports to expose in the service (normally used with the `sidecar` value)
   ##
   extraPorts:

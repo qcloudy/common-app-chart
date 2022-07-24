@@ -6,5 +6,11 @@ metadata:
   name: {{ include "service.fullname" . }}-config
   namespace: {{ .Release.namespace }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
+    {{- if $.Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" $.Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if $.Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" $.Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 data: {{- (tpl (.Files.Glob $configPath).AsConfig . ) | nindent 2 }}
 {{- end }}

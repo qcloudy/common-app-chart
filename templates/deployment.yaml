@@ -4,6 +4,12 @@ metadata:
   name: {{ include "service.fullname" .}}
   namespace: {{ .Release.namespace }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   {{- if .Values.revisionHistoryLimit }}
@@ -17,7 +23,13 @@ spec:
   template:
     metadata:
       labels: {{- include "service.labels.standard" . | nindent 8 }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
       annotations:
+        {{- if .Values.podAnnotations }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.podAnnotations "context" $) | nindent 8 }}
+        {{- end }}
         {{- if .Values.secretsManager.bankVault.enabled }}
         {{- include "common.tplvalues.render" (dict "value" .Values.secretsManager.bankVault.annotations "context" $) | nindent 10 }}
         {{- end }}

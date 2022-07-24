@@ -47,6 +47,8 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `kubeVersion`      | Force target Kubernetes version (using Helm capabilities if not set)                                      | `nil` |
 | `nameOverride`     | String to partially override service.fullname template with a string (will prepend the release name)      | `nil` |
 | `fullnameOverride` | String to fully override service.fullname template with a string                                          | `nil` |
+| `commonLabels` | Add labels to all the deployed resources                                          | `nil` |
+| `commonAnnotations` | Add annotations to all the deployed resources                                          | `nil` |
 
 ### Secrets Management parameters
 
