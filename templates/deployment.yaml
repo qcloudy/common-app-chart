@@ -72,6 +72,10 @@ spec:
         - name: http
           containerPort: {{ .Values.service.targetPort }}
           protocol: TCP
+        {{- if .Values.metrics.enabled }}
+        - name: metrics
+          containerPort: {{ .Values.metrics.containerPort }}
+        {{- end }}
         {{- if .Values.extraContainerPorts }}
         {{- include "common.tplvalues.render" (dict "value" .Values.extraContainerPorts "context" $) | nindent 8 }}
         {{- end }}
