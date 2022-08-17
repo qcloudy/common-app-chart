@@ -42,13 +42,13 @@ These commands deploy service on the Kubernetes cluster in the default configura
 
 ### Common parameters
 
-| Name               | Description                                                                                               | Value |
-| ------------------ | --------------------------------------------------------------------------------------------------------- | ----- |
-| `kubeVersion`      | Force target Kubernetes version (using Helm capabilities if not set)                                      | `nil` |
-| `nameOverride`     | String to partially override service.fullname template with a string (will prepend the release name)      | `nil` |
-| `fullnameOverride` | String to fully override service.fullname template with a string                                          | `nil` |
-| `commonLabels` | Add labels to all the deployed resources                                          | `nil` |
-| `commonAnnotations` | Add annotations to all the deployed resources                                          | `nil` |
+| Name                | Description                                                                                               | Value |
+| ------------------- | --------------------------------------------------------------------------------------------------------- | ----- |
+| `kubeVersion`       | Force target Kubernetes version (using Helm capabilities if not set)                                      | `nil` |
+| `nameOverride`      | String to partially override service.fullname template with a string (will prepend the release name)      | `nil` |
+| `fullnameOverride`  | String to fully override service.fullname template with a string                                          | `nil` |
+| `commonLabels`      | Add labels to all the deployed resources                                                                  | `nil` |
+| `commonAnnotations` | Add annotations to all the deployed resources                                                             | `nil` |
 
 ### Secrets Management parameters
 
@@ -69,24 +69,28 @@ These commands deploy service on the Kubernetes cluster in the default configura
 
 ### Metrics parameters
 
-| Name                                       | Description                                                                           | Value       |
-| ------------------------------------------ | ------------------------------------------------------------------------------------- | ----------- |
-| `metrics.enabled`                          | Enable Prometheus to access metrics endpoint                                          | `false`     |
-| `metrics.containerPort`                    | Prometheus Exporter container port                                                    | `8081`      |
-| `metrics.service.type`                     | Prometheus Exporter service type                                                      | `ClusterIP` |
-| `metrics.service.port`                     | Prometheus Exporter service port                                                      | `8081`      |
-| `metrics.service.annotations`              | Annotations for Prometheus to auto-discover the metrics endpoint                      | `{}`        |
-| `metrics.serviceMonitor.enabled`           | Create ServiceMonitor Resource for scraping metrics using Prometheus Operator         | `false`     |
-| `metrics.serviceMonitor.path`              | Scrape path for the ServiceMonitor Resource                                           | `/metrics`  |
-| `metrics.serviceMonitor.namespace`         | Namespace for the ServiceMonitor Resource (defaults to the Release Namespace)         | `""`        |
-| `metrics.serviceMonitor.interval`          | Interval at which metrics should be scraped.                                          | `""`        |
-| `metrics.serviceMonitor.scrapeTimeout`     | Timeout after which the scrape is ended                                               | `""`        |
-| `metrics.serviceMonitor.additionalLabels`  | Additional labels that can be used so ServiceMonitor will be discovered by Prometheus | `{}`        |
-| `metrics.serviceMonitor.selector`          | Prometheus instance selector labels                                                   | `{}`        |
-| `metrics.serviceMonitor.relabelings`       | RelabelConfigs to apply to samples before scraping                                    | `[]`        |
-| `metrics.serviceMonitor.metricRelabelings` | MetricRelabelConfigs to apply to samples before ingestion                             | `[]`        |
-| `metrics.serviceMonitor.honorLabels`       | Specify honorLabels parameter to add the scrape endpoint                              | `false`     |
-| `metrics.serviceMonitor.jobLabel`          | The name of the label on the target service to use as the job name in prometheus.     | `""`        |
+| Name                                       | Description                                                                                   | Value       |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------- | ----------- |
+| `metrics.enabled`                          | Enable Prometheus to access metrics endpoint                                                  | `false`     |
+| `metrics.containerPort`                    | Prometheus Exporter container port                                                            | `8081`      |
+| `metrics.service.type`                     | Prometheus Exporter service type                                                              | `ClusterIP` |
+| `metrics.service.port`                     | Prometheus Exporter service port                                                              | `8081`      |
+| `metrics.service.annotations`              | Annotations for Prometheus to auto-discover the metrics endpoint                              | `{}`        |
+| `metrics.serviceMonitor.enabled`           | Create ServiceMonitor Resource for scraping metrics using Prometheus Operator                 | `false`     |
+| `metrics.serviceMonitor.path`              | Scrape path for the ServiceMonitor Resource                                                   | `/metrics`  |
+| `metrics.serviceMonitor.namespace`         | Namespace for the ServiceMonitor Resource (defaults to the Release Namespace)                 | `""`        |
+| `metrics.serviceMonitor.interval`          | Interval at which metrics should be scraped.                                                  | `""`        |
+| `metrics.serviceMonitor.scrapeTimeout`     | Timeout after which the scrape is ended                                                       | `""`        |
+| `metrics.serviceMonitor.additionalLabels`  | Additional labels that can be used so ServiceMonitor will be discovered by Prometheus         | `{}`        |
+| `metrics.serviceMonitor.selector`          | Prometheus instance selector labels                                                           | `{}`        |
+| `metrics.serviceMonitor.relabelings`       | RelabelConfigs to apply to samples before scraping                                            | `[]`        |
+| `metrics.serviceMonitor.metricRelabelings` | MetricRelabelConfigs to apply to samples before ingestion                                     | `[]`        |
+| `metrics.serviceMonitor.honorLabels`       | Specify honorLabels parameter to add the scrape endpoint                                      | `false`     |
+| `metrics.serviceMonitor.jobLabel`          | The name of the label on the target service to use as the job name in prometheus.             | `""`        |
+| `metrics.sloth.enabled`                    | Enable sloth [Documentation](https://sloth.dev/)                                              | `false`     |
+| `metrics.sloth.additionalLabels`           | Additional labels that can be used so PrometheusServiceLevel will be discovered by Prometheus | `{}`        |
+| `metrics.sloth.slos`                       | SLOs with configuration                                                                       | `[]`        |
+
 
 ### App parameters
 
