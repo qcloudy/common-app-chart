@@ -3,7 +3,11 @@ apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
   name: {{ include "service.fullname" . }}-sloth-slo
-  namespace: {{ .Release.namespace }}
+  {{- if .Values.metrics.sloth.namespace }}
+  namespace: {{ .Values.metrics.sloth.namespace }}
+  {{- else }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
     {{- if .Values.metrics.sloth.additionalLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.metrics.sloth.additionalLabels "context" $ ) | nindent 4 }}
