@@ -316,6 +316,34 @@ metrics:
     ## @param metrics.serviceMonitor.jobLabel The name of the label on the target service to use as the job name in prometheus.
     ##
     jobLabel: ""
+  ## Sloth PrometheusServiceLevel Resource
+  ##
+  sloth:
+    enabled: false
+    ## @param metrics.sloth.additionalLabels Additional labels that can be used so PrometheusServiceLevel will be discovered by Prometheus
+    ##
+    additionalLabels: {}
+      # release: prometheus
+    ## @param
+    ##
+    slos: []
+      # - name: "Availability"
+      #   objective: 95
+      #   description: "Common SLO based on availability for HTTP request responses."
+      #   sli:
+      #     events:
+      #       errorQuery: sum(rate(http_server_requests_seconds_count{service="{{ .Values.nameOverride }}-metrics",code=~"(5..|429)"}[{{.window}}]))
+      #       totalQuery: sum(rate(http_server_requests_seconds_count{service="{{ .Values.nameOverride }}-metrics"}[{{.window}}]))
+      #   alerting:
+      #     name: ServiceHighErrorRate
+      #     labels:
+      #       category: "availability"
+      #     annotations:
+      #       summary: "High error rate requests responses"
+      #     pageAlert:
+      #       disable: true
+      #     ticketAlert:
+      #       disable: true
 
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##

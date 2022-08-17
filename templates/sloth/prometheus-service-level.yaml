@@ -1,0 +1,27 @@
+{{- if and .Values.metrics.enabled .Values.metrics.sloth.enabled }}
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: {{ include "service.fullname" . }}-sloth-slo
+  namespace: {{ .Release.namespace }}
+  labels: {{- include "service.labels.standard" . | nindent 4 }}
+    {{- if .Values.metrics.sloth.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.metrics.sloth.additionalLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  service: {{ include "service.fullname" . }}
+  labels: {{- include "service.labels.standard" . | nindent 4 }}
+    {{- if .Values.metrics.sloth.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.metrics.sloth.additionalLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  slos: {{- include "common.tplvalues.render" (dict "value" .Values.metrics.sloth.slos "context" $) | nindent 4 }}
+{{- end }}
