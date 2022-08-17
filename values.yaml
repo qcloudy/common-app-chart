@@ -320,6 +320,9 @@ metrics:
   ##
   sloth:
     enabled: false
+    ## @param metrics.serviceMonitor.namespace Namespace for the ServiceMonitor Resource (defaults to the Release Namespace)
+    ##
+    namespace: ""
     ## @param metrics.sloth.additionalLabels Additional labels that can be used so PrometheusServiceLevel will be discovered by Prometheus
     ##
     additionalLabels: {}
