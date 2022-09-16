@@ -348,6 +348,50 @@ metrics:
       #     ticketAlert:
       #       disable: true
 
+
+##  Argo Rollouts configuration
+##
+
+rollout:
+  enabled: true
+  updateStrategy:
+    canary:
+      steps:
+      - setWeight: 5
+      - pause:
+          duration: 5m
+      trafficRouting:
+        istio:
+          destinationRule:
+            canarySubsetName: canary
+            name: hello-world-dr
+            stableSubsetName: stable
+          virtualService:
+            name: hello-world-vs
+            routes:
+            - primary
+
+##  Istio VirtualService configuration
+##
+
+virtualService:
+  enabled: true
+  gateways: []
+  hosts:
+    - host: common.example.com
+      prefix:
+        - /
+
+
+##  Istio DestinationRule configuration
+##
+
+destinationRule:
+  enabled: true
+  subsets:
+    - name: canary
+    - name: stable
+
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##
 kubeVersion:

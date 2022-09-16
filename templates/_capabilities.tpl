@@ -85,3 +85,24 @@ Return the appropriate apiVersion for Horizontal Pod Autoscaler.
 {{- print "autoscaling/v2" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the appropriate apiVersion for Rollout.
+*/}}
+{{- define "capabilities.rollouts.apiVersion" -}}
+{{- print "argoproj.io/v1alpha1" -}}
+{{- end -}}
+
+{{/*
+Return the appropriate apiVersion for virtualService.
+*/}}
+{{- define "capabilities.virtualservice.apiVersion" -}}
+{{- print "networking.istio.io/v1beta1" -}}
+{{- end -}}
+
+{{/*
+Return the appropriate apiVersion for destinationRule.
+*/}}
+{{- define "capabilities.destinationrule.apiVersion" -}}
+{{- print "networking.istio.io/v1beta1" -}}
+{{- end -}}

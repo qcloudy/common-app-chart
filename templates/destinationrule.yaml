@@ -1,0 +1,11 @@
+apiVersion: {{ include "capabilities.destinationrule.apiVersion" .}}
+kind: DestinationRule
+metadata:
+  name: {{ include "service.fullname" . }}-dr
+  namespace: {{ .Release.namespace }}
+spec:
+  host: {{ include "service.fullname" . }}
+  {{- if .Values.destinationRule.subsets }}
+  subsets: {{- tpl (toYaml .Values.destinationRule.subsets) $ | nindent 4 }}
+  {{- end }}
+  
