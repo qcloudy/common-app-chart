@@ -1,25 +1,40 @@
-
 {{- if .Values.virtualService.enabled }}
 apiVersion: {{ include "capabilities.virtualservice.apiVersion" .}}
 kind: VirtualService
 metadata:
-  name: {{ include "service.fullname" . }}-vsa
+  name: {{ include "service.fullname" . }}-vs
   namespace: {{ .Release.namespace }}
 spec:
+  {{- if .Values.virtualService.gateways}}
   gateways:
-  - istio-system/istio-ingress-gateway
-  {{- range .Values.virtualService.hosts }}
-  hosts:
-  - {{ .host }}
-  http:
-  - match:
-    - uri:
-      {{- range .prefix }}
-        prefix: {{ . }}
-      {{- end }}
+  {{- range .Values.virtualService.gateways }}
+  - {{ . }}
   {{- end }}
-    name: primary
-    route:
-    - weight: 0
-      {{- include "virtualService.destination" (dict "serviceName" (include "service.fullname" $) "subsetName" "stable" "context" $)  | nindent 6 }}
+  {{- end }}
+  hosts:
+  {{- range .Values.virtualService.hosts }}
+  - {{ . }}
+  {{- end }}
+  http:
+  - name: {{ include "service.fullname" . }}
+    route: {{- include "virtualService.destination" . | indent 4 }}
+    match:
+    {{- if .Values.virtualService.uri.prefix }}
+    {{- range .Values.virtualService.uri.prefix}}
+    - uri:
+        prefix: {{ . }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.virtualService.uri.regex }}
+    {{- range .Values.virtualService.uri.regex}}
+    - uri:
+        regex: {{ . }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.virtualService.uri.exact }}
+    {{- range .Values.virtualService.uri.exact}}
+    - uri:
+        exact: {{ . }}
+    {{- end }}
+    {{- end }}
 {{- end }}

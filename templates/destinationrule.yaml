@@ -5,7 +5,13 @@ metadata:
   namespace: {{ .Release.namespace }}
 spec:
   host: {{ include "service.fullname" . }}
-  {{- if .Values.destinationRule.subsets }}
-  subsets: {{- tpl (toYaml .Values.destinationRule.subsets) $ | nindent 4 }}
+  {{- if .Values.subsets }}
+  subsets:
+    {{- range .Values.subsets.canary}}
+    - name: {{ .name }}
+    {{- end }}
+    {{- range .Values.subsets.stable}}
+    - name: {{ .name }}
+    {{- end }}
   {{- end }}
   
