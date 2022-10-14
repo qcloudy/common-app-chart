@@ -1,38 +1,38 @@
-{{- if .Values.virtualService.enabled }}
-apiVersion: {{ include "capabilities.virtualservice.apiVersion" .}}
+{{- if .Values.istio.virtualService.enabled }}
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{ include "service.fullname" . }}-vs
   namespace: {{ .Release.namespace }}
 spec:
-  {{- if .Values.virtualService.gateways}}
+  {{- if .Values.istio.virtualService.gateways}}
   gateways:
-  {{- range .Values.virtualService.gateways }}
+  {{- range .Values.istio.virtualService.gateways }}
   - {{ . }}
   {{- end }}
   {{- end }}
   hosts:
-  {{- range .Values.virtualService.hosts }}
+  {{- range .Values.istio.virtualService.hosts }}
   - {{ . }}
   {{- end }}
   http:
   - name: {{ include "service.fullname" . }}
     route: {{- include "virtualService.destination" . | indent 4 }}
     match:
-    {{- if .Values.virtualService.uri.prefix }}
-    {{- range .Values.virtualService.uri.prefix}}
+    {{- if .Values.istio.virtualService.uri.prefix }}
+    {{- range .Values.istio.virtualService.uri.prefix}}
     - uri:
         prefix: {{ . }}
     {{- end }}
     {{- end }}
-    {{- if .Values.virtualService.uri.regex }}
-    {{- range .Values.virtualService.uri.regex}}
+    {{- if .Values.istio.virtualService.uri.regex }}
+    {{- range .Values.istio.virtualService.uri.regex}}
     - uri:
         regex: {{ . }}
     {{- end }}
-    {{- end }}
-    {{- if .Values.virtualService.uri.exact }}
-    {{- range .Values.virtualService.uri.exact}}
+    {{- end }}c
+    {{- if .Values.istio.virtualService.uri.exact }}
+    {{- range .Values.istio.virtualService.uri.exact}}
     - uri:
         exact: {{ . }}
     {{- end }}

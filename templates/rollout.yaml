@@ -1,4 +1,4 @@
-{{- if .Values.rollout.enabled }}
+{{- if .Values.argocd.enabled }}
 apiVersion: {{ include "capabilities.rollouts.apiVersion" . }}
 kind: Rollout
 metadata:
@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels: {{- include "service.labels.matchLabels" . | nindent 6 }}
-  strategy: {{- tpl (toYaml .Values.rollout.updateStrategy) $ | nindent 4 }}
+  strategy: {{- tpl (toYaml .Values.argocd.updateStrategy) $ | nindent 4 }}
   template:
     metadata:
       labels: {{- include "service.labels.standard" . | nindent 8 }}

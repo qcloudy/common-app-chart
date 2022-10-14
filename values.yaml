@@ -349,11 +349,11 @@ metrics:
       #       disable: true
 
 
-## Argo Rollouts configuration
+## Argo Rollouts configurationsc
 ## ref: 
 ##
-rollout:
-  enabled: true
+argocd:
+  enabled: false
   ## @param rollout.updateStrategy.type - Set up update strategy for deploy.
   ## Example:
   #updateStrategy:
@@ -385,63 +385,52 @@ rollout:
             canarySubsetName: canary
             stableSubsetName: stable
           virtualService:
-            name: hello-worlds-vs
+            name: hello-worlds-vsc
             routes:
             - hello-worlds
 
 
-
-##  Istio VirtualService configuration
-## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
-##
-virtualService:
-  ## @param virtualService.enabled enable/disable istio virtualService creation
-  ##
-  enabled: true
+istio:
+  virtualService:
+    enabled: true
+  ##  Istio VirtualService configuration
+  ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
   ## @param virtualService.gateways list of names of gateways and sidecars that should apply routes
   ##
-  gateways: []
-  ## @param virtualService.prefix virtualService.hosts list containing the destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address
-  ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
-  ## 
-  hosts:
-    - common.example.com
-  ## @param virtualService.uri URI to match values are case-sensitive and formatted as follows:
-  ## exact: "value" for exact string match
-  ## prefix: "value" for prefix-based match
-  ## regex: "value" for RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).
-  ##
-  uri:
-    ## @param virtualService.uri.prefix list containing the prefixes for prefix-based uri match
-    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
+    gateways: []
+    ## @param virtualService.prefix virtualService.hosts list containing the destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
+    ## 
+    hosts:
+      - common.example.com
+    ## @param virtualService.uri URI to match values are case-sensitive and formatted as follows:
+    ## exact: "value" for exact string match
+    ## prefix: "value" for prefix-based match
+    ## regex: "value" for RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).
     ##
-    prefix:
-    - /
-    - /example
-    ## @param virtualService.uri.regex list containing regexes for prefix-based uri match
-    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
-    ##    
-    regex: []
-    ## @param virtualService.uri.exact list containing strings for exact based uri match
-    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
-    ##   
-    exact: []
-
-##  Istio DestinationRule configuration
-##
-
-destinationRule:
-  enabled: true
-
-## @param subsets - subset of endpoints of a service. Subsets can be used for scenarios like A/B testing, or routing to a specific version of a service.
-subsets:
+    uri:
+      ## @param virtualService.uri.prefix list containing the prefixes for prefix-based uri match
+      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
+      ##
+      prefix:
+        - /
+        - /example
+      ## @param virtualService.uri.regex list containing regexes for prefix-based uri match
+      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
+      ##    
+      regex: []
+      ## @param virtualService.uri.exact list containing strings for exact based uri match
+      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
+      ##   
+      cexact: []
+  destinationRule:
+    enabled: false
   canary:
-  - name: canary
-    weight: 0
+    - name: canary
+      weight: 0
   stable:
-  - name: stable
-    weight: 100
-
+    - name: stable
+      weight: 100
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##
 kubeVersion:
