@@ -1,9 +1,9 @@
-{{- if not .Values.istio.enabled}}
+{{- if not .Values.argocd.rollouts.enabled}}
 apiVersion: {{ include "capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ include "service.fullname" .}}
-  namespace: {{ .Release.namespace }}cl
+  namespace: {{ .Release.namespace }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}

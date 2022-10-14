@@ -353,50 +353,51 @@ metrics:
 ## ref: 
 ##
 argocd:
-  enabled: false
-  ## @param rollout.updateStrategy.type - Set up update strategy for deploy.
-  ## Example:
-  #updateStrategy:
-  #  canary:
-  #    steps:
-  #    - setWeight: 5
-  #    - pause:
-  #        duration: 5m
-  #    trafficRouting:
-  #      istio:
-  #        destinationRule:
-  #          canarySubsetName: canary
-  #          name: example-dr
-  #          stableSubsetName: stable
-  #       virtualService:
-  #          name: example-dr
-  #          routes:
-  #          - primary
-  updateStrategy:
-    canary:
-      steps:
-      - setWeight: 5
-      - pause:
-          duration: 5m
-      trafficRouting:
-        istio:
-          destinationRule:
-            name: hello-worlds-dr
-            canarySubsetName: canary
-            stableSubsetName: stable
-          virtualService:
-            name: hello-worlds-vsc
-            routes:
-            - hello-worlds
+  rollouts:
+    enabled: false
+    ## @param rollout.updateStrategy.type - Set up update strategy for deploy.
+    ## Example:
+    #updateStrategy:
+    #  canary:
+    #    steps:
+    #    - setWeight: 5
+    #    - pause:
+    #        duration: 5m
+    #    trafficRouting:
+    #      istio:
+    #        destinationRule:
+    #          canarySubsetName: canary
+    #          name: example-dr
+    #          stableSubsetName: stable
+    #       virtualService:
+    #          name: example-dr
+    #          routes:
+    #          - primary
+    updateStrategy:
+      canary:
+        steps:
+        - setWeight: 5
+        - pause:
+            duration: 5m
+        trafficRouting:
+          istio:
+            destinationRule:
+              name: example-dr
+              canarySubsetName: canary
+              stableSubsetName: stable
+            virtualService:
+              name: example-vs
+              routes:
+              - hello-worlds
 
 
 istio:
   virtualService:
-    enabled: true
-  ##  Istio VirtualService configuration
-  ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
-  ## @param virtualService.gateways list of names of gateways and sidecars that should apply routes
-  ##
+    enabled: false
+    ##  Istio VirtualService configuration
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
+    ## @param virtualService.gateways list of names of gateways and sidecars that should apply routes
+    ##
     gateways: []
     ## @param virtualService.prefix virtualService.hosts list containing the destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address
     ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
@@ -422,7 +423,7 @@ istio:
       ## @param virtualService.uri.exact list containing strings for exact based uri match
       ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
       ##   
-      cexact: []
+      exact: []
   destinationRule:
     enabled: false
   canary:

@@ -30,7 +30,7 @@ spec:
     - uri:
         regex: {{ . }}
     {{- end }}
-    {{- end }}c
+    {{- end }}
     {{- if .Values.istio.virtualService.uri.exact }}
     {{- range .Values.istio.virtualService.uri.exact}}
     - uri:
