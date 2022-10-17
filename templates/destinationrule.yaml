@@ -8,10 +8,10 @@ spec:
   host: {{ include "service.fullname" . }}
   {{- if .Values.istio.subsets }}
   subsets:
-    {{- range .Values.istio.canary}}
+    {{- range .Values.istio.subsets.canary}}
     - name: {{ .name }}
     {{- end }}
-    {{- range .Values.istio.stable}}
+    {{- range .Values.istio.subsets.stable}}
     - name: {{ .name }}
     {{- end }}
   {{- end }}

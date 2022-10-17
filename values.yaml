@@ -426,13 +426,13 @@ istio:
       exact: []
   destinationRule:
     enabled: false
-  canary:
-    - name: canary
-      weight: 0
-  stable:
-    - name: stable
-      weight: 100
+  subsets:
+    canary:
+      - name: canary
+        weight: 0
+    stable:
+      - name: stable
+        weight: 100
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##
 kubeVersion:
-
