@@ -75,6 +75,7 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `metrics.containerPort`                    | Prometheus Exporter container port                                                            | `8081`      |
 | `metrics.service.type`                     | Prometheus Exporter service type                                                              | `ClusterIP` |
 | `metrics.service.port`                     | Prometheus Exporter service port                                                              | `8081`      |
+| `metrics.service.targetPort`               | Prometheus Exporter service target port                                                       | `metrics`   |
 | `metrics.service.annotations`              | Annotations for Prometheus to auto-discover the metrics endpoint                              | `{}`        |
 | `metrics.serviceMonitor.enabled`           | Create ServiceMonitor Resource for scraping metrics using Prometheus Operator                 | `false`     |
 | `metrics.serviceMonitor.path`              | Scrape path for the ServiceMonitor Resource                                                   | `/metrics`  |

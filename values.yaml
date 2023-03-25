@@ -271,6 +271,9 @@ metrics:
     ## @param metrics.service.port Prometheus service port
     ##
     port: 8081
+    ## @param metrics.service.targetPort Prometheus service target port (container port name)
+    ##
+    targetPort: metrics
     ## @param metrics.service.annotations [object] Annotations for Prometheus to auto-discover the metrics endpoint
     ##
     annotations:

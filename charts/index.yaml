@@ -2,8 +2,20 @@ apiVersion: v1
 entries:
   common-app-chart:
   - apiVersion: v1
+    appVersion: 3.0.1
+    created: "2023-03-25T15:21:57.825594+06:00"
+    description: common-app-chart
+    digest: ffa5a915ef88bdc42e16b35c50af3acef8a068df2a9a5e1ced8c47f338402f1e
+    maintainers:
+    - email: marat@qcloudy.io
+      name: Okassov Marat
+    name: common-app-chart
+    urls:
+    - common-app-chart-3.0.1.tgz
+    version: 3.0.1
+  - apiVersion: v1
     appVersion: 3.0.0
-    created: "2022-11-16T06:15:50.514946+06:00"
+    created: "2023-03-25T15:21:57.824627+06:00"
     description: common-app-chart
     digest: c1d9b84529aff74a0ccef9312ca590cf804f7e7faec5711f9cd6cd6fd2f6ac8d
     maintainers:
@@ -15,7 +27,7 @@ entries:
     version: 3.0.0
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2022-11-16T06:15:50.514118+06:00"
+    created: "2023-03-25T15:21:57.823695+06:00"
     description: common-app-chart
     digest: 5a1b0193912632dc505faabce2255cb77aafa322385d458b2e9d25f4e9c216a5
     maintainers:
@@ -27,7 +39,7 @@ entries:
     version: 2.4.0
   - apiVersion: v1
     appVersion: 2.3.0
-    created: "2022-11-16T06:15:50.513387+06:00"
+    created: "2023-03-25T15:21:57.82289+06:00"
     description: common-app-chart
     digest: 3a2570680ec2ea21651dcaaf6781f07bce13c47f467bbcbd4695f4da79b7fc24
     maintainers:
@@ -39,7 +51,7 @@ entries:
     version: 2.3.0
   - apiVersion: v1
     appVersion: 2.2.0
-    created: "2022-11-16T06:15:50.512725+06:00"
+    created: "2023-03-25T15:21:57.822163+06:00"
     description: common-app-chart
     digest: ea8b15a62204dda988c6fc355d984e26ba60e23731a142e1ae1b21c0cb1b6eec
     maintainers:
@@ -51,7 +63,7 @@ entries:
     version: 2.2.0
   - apiVersion: v1
     appVersion: 2.1.0
-    created: "2022-11-16T06:15:50.512167+06:00"
+    created: "2023-03-25T15:21:57.821572+06:00"
     description: common-app-chart
     digest: 5f7d717f758dd5ec620a217459d2a6aabccc1fea416b889548769c39e0626b0c
     maintainers:
@@ -63,7 +75,7 @@ entries:
     version: 2.1.0
   - apiVersion: v1
     appVersion: 2.0.0
-    created: "2022-11-16T06:15:50.511636+06:00"
+    created: "2023-03-25T15:21:57.820999+06:00"
     description: common-app-chart
     digest: 87f9e32be94f1f9088061bd20d4bd3a4f97a4874d3fe15a8fa79ad1f1b7b9a31
     maintainers:
@@ -75,7 +87,7 @@ entries:
     version: 2.0.0
   - apiVersion: v1
     appVersion: 1.0.5
-    created: "2022-11-16T06:15:50.511067+06:00"
+    created: "2023-03-25T15:21:57.820465+06:00"
     description: common-app-chart
     digest: 50cd46f994f1d4a9385002251d8329c817ad1ebf04813f1eeb76eb11f46b1434
     maintainers:
@@ -87,7 +99,7 @@ entries:
     version: 1.0.5
   - apiVersion: v1
     appVersion: 1.0.4
-    created: "2022-11-16T06:15:50.510559+06:00"
+    created: "2023-03-25T15:21:57.819921+06:00"
     description: common-app-chart
     digest: 0cd4e7e97c2b1cb13a21ae57fbbaa0118ac276b1f66fa6e153294b325aee0782
     maintainers:
@@ -99,7 +111,7 @@ entries:
     version: 1.0.4
   - apiVersion: v1
     appVersion: 1.0.3
-    created: "2022-11-16T06:15:50.51006+06:00"
+    created: "2023-03-25T15:21:57.81942+06:00"
     description: common-app-chart
     digest: 3c2fa9650c1b4e5cf55d5070d7c06defe319348695670710771ccd2bdf8e59f7
     maintainers:
@@ -111,7 +123,7 @@ entries:
     version: 1.0.3
   - apiVersion: v1
     appVersion: 1.0.2
-    created: "2022-11-16T06:15:50.508982+06:00"
+    created: "2023-03-25T15:21:57.818884+06:00"
     description: common-app-chart
     digest: 993ce0bc0470ab92f74fbc148ac3e7811e7f1a901f3084c301f5377e78dddaa7
     maintainers:
@@ -123,7 +135,7 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: 1.0.1
-    created: "2022-11-16T06:15:50.508489+06:00"
+    created: "2023-03-25T15:21:57.818001+06:00"
     description: common-app-chart
     digest: 3cacec2448a27f7bfe48750a786b0b0a0560dd5f514ecc88d225869ece687576
     maintainers:
@@ -135,7 +147,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2022-11-16T06:15:50.507989+06:00"
+    created: "2023-03-25T15:21:57.817518+06:00"
     description: common-app-chart
     digest: 03c515abc217d4b7eaf2bccb1a15eece6276afd41f54c6d61c735615cd031ee8
     maintainers:
@@ -145,4 +157,4 @@ entries:
     urls:
     - common-app-chart-1.0.0.tgz
     version: 1.0.0
-generated: "2022-11-16T06:15:50.507354+06:00"
+generated: "2023-03-25T15:21:57.816902+06:00"
