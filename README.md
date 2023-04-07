@@ -226,6 +226,47 @@ cp src/main/resources/application.yml chart/config/application.yml
 configMapFile: "application.yml"
 ```
 
+### Adding extra manifest
+
+```yaml
+extraDeploy:
+  net-pol: |-
+    apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: {{ .Release.Namespace | quote }}
+      namespace: {{ .Release.Namespace | quote }}
+    spec:
+      podSelector:
+        matchLabels:
+          role: db
+      policyTypes:
+      - Ingress
+      - Egress
+      ingress:
+      - from:
+        - ipBlock:
+            cidr: 172.17.0.0/16
+            except:
+            - 172.17.1.0/24
+        - namespaceSelector:
+            matchLabels:
+              project: myproject
+        - podSelector:
+            matchLabels:
+              role: frontend
+        ports:
+        - protocol: TCP
+          port: 6379
+      egress:
+      - to:
+        - ipBlock:
+            cidr: 10.0.0.0/24
+        ports:
+        - protocol: TCP
+          port: 5978
+```
+
 ## Authors
 
 Okassov Marat <marat@qcloudy.io>
