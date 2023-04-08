@@ -96,9 +96,7 @@ service:
 
 ingress:
   enabled: false
-  certManager: false
   annotations: {}
-    # kubernetes.io/ingress.class: ingress
 
   path: / # Default path for extraHosts
 
@@ -395,49 +393,148 @@ argocd:
 
 
 istio:
+
+  ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
+  ##
   virtualService:
     enabled: false
-    ##  Istio VirtualService configuration
-    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
-    ## @param virtualService.gateways list of names of gateways and sidecars that should apply routes
-    ##
-    gateways: []
-    ## @param virtualService.prefix virtualService.hosts list containing the destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address
+
+    ## @param virtualService.hosts list containing the destination hosts to which traffic is being sent. 
+    ## Could be a DNS name with wildcard prefix or an IP address
     ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
     ## 
-    hosts:
-      - common.example.com
-    ## @param virtualService.uri URI to match values are case-sensitive and formatted as follows:
-    ## exact: "value" for exact string match
-    ## prefix: "value" for prefix-based match
-    ## regex: "value" for RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).
-    ##
-    uri:
-      ## @param virtualService.uri.prefix list containing the prefixes for prefix-based uri match
-      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
-      ##
-      prefix:
-        - /
-        - /example
-      ## @param virtualService.uri.regex list containing regexes for prefix-based uri match
-      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
-      ##    
-      regex: []
-      ## @param virtualService.uri.exact list containing strings for exact based uri match
-      ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPMatchRequest
-      ##   
-      exact: []
+    hosts: []
+    
+    ## @param virtualService.gateways The names of gateways and sidecars that should apply these routes. 
+    ## Gateways in other namespaces may be referred to by <gateway namespace>/<gateway name>; specifying a gateway with no namespace qualifier is the same as specifying the VirtualService’s namespace.
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#VirtualService
+    ## 
+    gateways: []
+
+
+    ## @param virtualService.http An ordered list of route rules for HTTP traffic. 
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPRoute
+    ## 
+    http: []
+
+    ## @param virtualService.tls An ordered list of route rule for non-terminated TLS & HTTPS traffic.
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#TLSRoute
+    ## 
+    tls: []
+
+    ## @param virtualService.tcp An ordered list of route rules for opaque TCP traffic. 
+    ## ref: https://istio.io/latest/docs/reference/config/networking/virtual-service/#TCPRoute
+    ## 
+    tcp: []
+
+    ## @param virtualService.destinationRule.exportTo A list of namespaces to which this destination rule is exported
+    ## The resolution of a destination rule to apply to a service occurs in the context of a hierarchy of namespaces. Exporting a destination rule allows it to be included in the resolution hierarchy for services in other namespaces. 
+    ## This feature provides a mechanism for service owners and mesh administrators to control the visibility of destination rules across namespace boundaries.
+    ## ref: https://istio.io/latest/docs/reference/config/networking/destination-rule/
+    ## 
+    exportTo: []
+  
+  ## ref: https://istio.io/latest/docs/reference/config/networking/destination-rule/
+  ##
   destinationRule:
     enabled: false
-  subsets:
-    canary:
-      - name: canary
-        weight: 0
-    stable:
-      - name: stable
-        weight: 100
+
+    ## @param virtualService.destinationRule.trafficPolicy Traffic policies to apply (load balancing policy, connection pool sizes, outlier detection).
+    ## ref: https://istio.io/latest/docs/reference/config/networking/destination-rule/#TrafficPolicy
+    ## 
+    trafficPolicy: {}
+
+    ## @param virtualService.destinationRule.subsets One or more named sets that represent individual versions of a service. 
+    ## Traffic policies can be overridden at subset level.
+    ## ref: https://istio.io/latest/docs/reference/config/networking/destination-rule/#Subset
+    ## 
+    subsets: []
+
+    ## @param virtualService.destinationRule.exportTo A list of namespaces to which this destination rule is exported
+    ## The resolution of a destination rule to apply to a service occurs in the context of a hierarchy of namespaces. Exporting a destination rule allows it to be included in the resolution hierarchy for services in other namespaces. 
+    ## This feature provides a mechanism for service owners and mesh administrators to control the visibility of destination rules across namespace boundaries.
+    ## ref: https://istio.io/latest/docs/reference/config/networking/destination-rule/
+    ## 
+    exportTo: []
+
+    ## @param virtualService.destinationRule.workloadSelector One or more labels that indicate a specific set of pods/VMs on which a policy should be applied. 
+    ## The scope of label search is restricted to the configuration namespace in which the resource is present.
+    ## ref: https://istio.io/latest/docs/reference/config/type/workload-selector/#WorkloadSelector
+    ## e.g.
+    ## app: foo
+    ## component: backend
+    ## 
+    workloadSelector: {}
+
+  ## ref: https://istio.io/latest/docs/reference/config/security/authorization-policy/
+  ##
+  authorizationPolicy:
+    enabled: false
+
+    ## @param virtualService.authorizationPolicy.selector The selector decides where to apply the authorization policy. 
+    ## The selector will match with workloads in the same namespace as the authorization policy. 
+    ## If the authorization policy is in the root namespace, the selector will additionally match with workloads in all namespaces.
+    ## ref: https://istio.io/latest/docs/reference/config/type/workload-selector/#WorkloadSelector
+    ## e.g.
+    ## app: foo
+    ## component: backend
+    ## 
+    selector: {}
+
+    ## @param virtualService.authorizationPolicy.rules Rule matches requests from a list of sources that perform a list of operations subject to a list of conditions. 
+    ## A match occurs when at least one source, one operation and all conditions matches the request. An empty rule is always matched.
+    ## ref: https://istio.io/latest/docs/reference/config/security/authorization-policy/#Rule
+    ## 
+    rules: []
+
+    ## @param virtualService.authorizationPolicy.action Action specifies the operation to take.
+    ## ref: https://istio.io/latest/docs/reference/config/security/authorization-policy/#AuthorizationPolicy-Action
+    ## e.g.
+    ## action: ALLOW/DENY/AUDIT/CUSTOM
+    ## 
+    action:
+
+    ## @param virtualService.authorizationPolicy.selector Specifies the name of the extension provider. 
+    ## The list of available providers is defined in the MeshConfig. Note, currently at most 1 extension provider is allowed per workload. 
+    ## Different workloads can use different extension provider.
+    ## ref: https://istio.io/latest/docs/reference/config/security/authorization-policy/#AuthorizationPolicy-ExtensionProvider
+    ## 
+    provider:
+
+  
+  ## ref: https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode
+  ##
+  peerAuthentication:
+    enabled: false
+
+    ## @param virtualService.peerAuthentication.selector The selector decides where to apply the peer authentication. 
+    ## The selector will match with workloads in the same namespace as the peer authentication. 
+    ## If the peer authentication is in the root namespace, the selector will additionally match with workloads in all namespaces.
+    ## ref: https://istio.io/latest/docs/reference/config/type/workload-selector/#WorkloadSelector
+    ## e.g.
+    ## app: foo
+    ## component: backend
+    ## 
+    selector: {}
+
+    ## @param virtualService.peerAuthentication.mtlsMode Mutual TLS settings for workload. If not defined, inherit from parent.
+    ## ref: https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode
+    ## e.g.
+    ## UNSET - Inherit from parent, if has one. Otherwise treated as PERMISSIVE.
+    ## DISABLE - Connection is not tunneled.
+    ## PERMISSIVE - Connection can be either plaintext or mTLS tunnel.
+    ## STRICT - Connection is an mTLS tunnel (TLS with client cert must be presented).
+    mtlsMode:
+
+    ## @param virtualService.peerAuthentication.portLevelMtls Port specific mutual TLS settings. 
+    ## These only apply when a workload selector is specified.
+    ## ref: https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode
+    ## e.g.
+    portLevelMtls: {}
+
 
 ## @param extraDeploy - Generate additional kubernetes manifests
+## e.g.
 ## net-pol: |-
 ##   apiVersion: networking.k8s.io/v1
 ##   kind: NetworkPolicy

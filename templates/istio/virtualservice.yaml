@@ -1,0 +1,35 @@
+{{- if .Values.istio.virtualService.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.istio.virtualService.gateways }}
+  gateways:
+  {{- range .Values.istio.virtualService.gateways }}
+  - {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.hosts}}
+  hosts:
+  {{- range .Values.istio.virtualService.hosts }}
+  - {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.http }}
+  http: {{- include "common.tplvalues.render" (dict "value" .Values.istio.virtualService.http "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.tls }}
+  tls: {{- include "common.tplvalues.render" (dict "value" .Values.istio.virtualService.tls "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.tcp }}
+  tcp: {{- include "common.tplvalues.render" (dict "value" .Values.istio.virtualService.tcp "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.exportTo }}
+  exportTo:
+  {{- range .Values.istio.virtualService.gateways }}
+  - {{ . }}
+  {{- end }}
+  {{- end }}
+{{- end }}

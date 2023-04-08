@@ -1,0 +1,32 @@
+{{- if .Values.istio.authorizationPolicy.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.istio.authorizationPolicy.selector }}
+  selector:
+    matchLabels: {{- include "common.tplvalues.render" (dict "value" .Values.istio.authorizationPolicy.selector "context" $) | nindent 6 }}
+  {{ else }}
+  selector:
+    matchLabels: {{- include "service.labels.matchLabels" . | nindent 6 }}
+  {{- end }}
+  {{- if .Values.istio.authorizationPolicy.action }}
+  action: {{ .Values.istio.authorizationPolicy.action }}
+  {{- end }}
+  {{- if .Values.istio.authorizationPolicy.rules }}
+  rules: {{- include "common.tplvalues.render" (dict "value" .Values.istio.authorizationPolicy.rules "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.authorizationPolicy.provider }}
+  provider:
+    name: {{ .Values.istio.authorizationPolicy.provider }}
+  {{- end }}
+{{- end }}
+
+
+
+
+
+
+

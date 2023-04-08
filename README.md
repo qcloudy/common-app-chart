@@ -142,7 +142,33 @@ These commands deploy service on the Kubernetes cluster in the default configura
 | `initContainers`                       | Temporary init containers to run before main container up                                                                                                 | `nil`                    |
 
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+### Istio parameters
+
+| Name                      | Description                                     | Value  |
+| ------------------------- | ----------------------------------------------- | -----  |
+| `istio.virtualService.enabled`     | Enable VirtualService                                      | `false`|
+| `istio.virtualService.hosts`     |                                     | `[]`|
+| `istio.virtualService.gateways`     |                                      | `[]`|
+| `istio.virtualService.http`     |                                      | `[]`|
+| `istio.virtualService.tls`     |                                      | `[]`|
+| `istio.virtualService.tcp`     |                                       | `[]`|
+| `istio.virtualService.exportTo`     | exportTo                                      | `[]`|
+| `istio.destinationRule.enabled`     | Enable DestinationRule                                      | `false`|
+| `istio.destinationRule.trafficPolicy`     |                                      | `{}`|
+| `istio.destinationRule.subsets`     |                                       | `[]`|
+| `istio.destinationRule.exportTo`     |                                       | `[]`|
+| `istio.destinationRule.workloadSelector`     |                                       | `{}`|
+| `istio.authorizationPolicy.enabled`     | Enable AuthorizationPolicy                                      | `false`|
+| `istio.authorizationPolicy.selector`     |                                       | `{}`|
+| `istio.authorizationPolicy.rules`     |                                       | `[]`|
+| `istio.authorizationPolicy.action`     |                                       | `nil`|
+| `istio.authorizationPolicy.provider`     |                                       | `nil`|
+| `istio.peerAuthentication.enabled`     | Enable PeerAuthentication                                      | `false`|
+| `istio.peerAuthentication.selector`     |                                       | `{}`|
+| `istio.peerAuthentication.mtlsMode`     |                                       | `nil`|
+| `istio.peerAuthentication.portLevelMtls`     |                                       | `{}`|
+
+Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example:
 
 ```console
 $ helm install my-release -f values.yaml common-app-chart/

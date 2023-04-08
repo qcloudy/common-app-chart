@@ -3,7 +3,7 @@ apiVersion: {{ include "capabilities.rollouts.apiVersion" . }}
 kind: Rollout
 metadata:
   name: {{ include "service.fullname" .}}
-  namespace: {{ .Release.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels: {{- include "service.labels.standard" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}

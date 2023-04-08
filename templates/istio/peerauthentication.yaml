@@ -1,0 +1,22 @@
+{{- if .Values.istio.peerAuthentication.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.istio.peerAuthentication.selector }}
+  selector:
+    matchLabels: {{- include "common.tplvalues.render" (dict "value" .Values.istio.peerAuthentication.selector "context" $) | nindent 6 }}
+  {{ else }}
+  selector:
+    matchLabels: {{- include "service.labels.matchLabels" . | nindent 6 }}
+  {{- end }}
+  {{- if .Values.istio.peerAuthentication.mtlsMode }}
+  mtls:
+    mode: {{ .Values.istio.peerAuthentication.mtlsMode }}
+  {{- end }}
+  {{- if .Values.istio.peerAuthentication.portLevelMtls }}
+  portLevelMtls: {{- include "common.tplvalues.render" (dict "value" .Values.istio.peerAuthentication.portLevelMtls "context" $) | nindent 4 }}
+  {{- end }}
+{{- end }}

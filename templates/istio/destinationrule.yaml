@@ -1,0 +1,26 @@
+{{- if .Values.istio.destinationRule.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  host: {{ include "service.fullname" . }}
+  {{- if .Values.istio.destinationRule.trafficPolicy }}
+  trafficPolicy: {{- include "common.tplvalues.render" (dict "value" .Values.istio.destinationRule.trafficPolicy "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.destinationRule.subsets }}
+  subsets: {{- include "common.tplvalues.render" (dict "value" .Values.istio.destinationRule.subsets "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.istio.destinationRule.exportTo }}
+  exportTo:
+  {{- range .Values.istio.destinationRule.exportTo }}
+  - {{ . }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.istio.destinationRule.workloadSelector }}
+  workloadSelector:
+    matchLabels: {{- include "common.tplvalues.render" (dict "value" .Values.istio.destinationRule.workloadSelector "context" $) | nindent 6 }}
+  {{- end }}
+{{- end }}
+  
