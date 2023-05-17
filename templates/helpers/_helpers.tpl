@@ -28,8 +28,8 @@ Return the proper image name
 */}}
 {{- define "common.images.image" -}}
 {{- $registryName := .imageRoot.registry -}}
-{{- $repositoryName := required "Param image.repository must be entered!" .imageRoot.repository -}}
-{{- $tag := required "Param image.tag must be entered!" .imageRoot.tag | toString -}}
+{{- $repositoryName := .imageRoot.repository -}}
+{{- $tag := .imageRoot.tag | toString -}}
 {{- if $registryName }}
 {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
 {{- else -}}

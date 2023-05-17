@@ -32,7 +32,7 @@ commonAnnotations: {}
 ## @param image.pullPolicy app image pull policy
 ##
 image:
-  repository:
+  repository: registry.hub.docker.com
   tag:
   pullPolicy: Always
 
