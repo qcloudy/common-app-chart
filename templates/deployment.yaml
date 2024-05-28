@@ -63,6 +63,10 @@ spec:
         env:
         {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
         {{- end }}
+        {{- if or .Values.envFrom }}
+        envFrom:
+        {{- include "common.tplvalues.render" (dict "value" .Values.envFrom "context" $) | nindent 10 }}
+        {{- end }}
         {{- if .Values.containerCommand }}
         command:
           {{- range .Values.containerCommand }}
