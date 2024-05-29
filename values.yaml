@@ -166,6 +166,19 @@ affinity: {}
 ##
 env:
 
+## @param envFrom - Use envFrom to define all of the Secret's or ConfgiMap's data as container environment variables
+##
+## Default envs example:
+##  envFrom:
+##  - secretRef:
+##      name: dev-secret
+##
+##  envFrom:
+##  - configMapRef:
+##      name: dev-cm
+##
+envFrom:
+
 ## @param configMapFile - Filename or matching wildcard pattern
 ## For example:
 ## configMapFile: "application.yml"
