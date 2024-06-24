@@ -148,6 +148,8 @@ tolerations: []
 
 affinity: {}
 
+topologySpreadConstraints: {}
+
 ## @param env - Array containing env vars to configure service
 ##
 ## Default envs example:
