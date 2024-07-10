@@ -590,3 +590,12 @@ extraDeploy: {}
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##
 kubeVersion:
+
+## @param podDisruptionBudget - Use to set PodDisrubtionBudget for pods
+## Example:
+## podDisruptionBudget:
+##  minAvailable: 1
+##  maxUnavailable: 3
+podDisruptionBudget:
+  minAvailable: 2
+  maxUnavailable: 5
