@@ -3,48 +3,48 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ $job.name }}
-  namespace: {{ $job.namespace }}
-  {{- with $.job.annotations }}
+  namespace: {{ $.Release.Namespace }}
+  {{- if $job.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{- toYaml $job.annotations | nindent 4 }}
   {{- end }}
 spec:
   template:
     spec:
-    {{- if $.job.imagePullSecrets }}
+      {{- if $job.imagePullSecrets }}
       imagePullSecrets:
       - name: {{ $job.imagePullSecrets }}
-    {{- end }}
+      {{- end }}
       containers:
       - image: "{{ $job.image.url }}"
         imagePullPolicy: {{ $job.image.imagePullPolicy }}
         name: {{ $job.name }}
-        {{- if or .Values.env }}
+        {{- if $job.env }}
         env:
-        {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
+        {{- include "common.tplvalues.render" (dict "value" $job.env "context" $) | nindent 8 }}
         {{- end }}
-        {{- if or .Values.envFrom }}
+        {{- if $job.envFrom }}
         envFrom:
-        {{- include "common.tplvalues.render" (dict "value" .Values.envFrom "context" $) | nindent 10 }}
+        {{- include "common.tplvalues.render" (dict "value" $job.envFrom "context" $) | nindent 8 }}
         {{- end }}
-        {{- if $.job.command }}
+        {{- if $job.command }}
         command: {{ $job.command }}
         {{- end }}
-        {{- with $.job.resources }}
+        {{- if $job.resources }}
         resources:
-{{ toYaml . | indent 10 }}
+          {{ toYaml $job.resources | nindent 8 }}
         {{- end }}
-      {{- with $.job.nodeSelector }}
+      {{- if $job.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
+        {{ toYaml $job.nodeSelector | nindent 8 }}
       {{- end }}
-      {{- with $.job.affinity }}
+      {{- if $job.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+        {{ toYaml $job.affinity | nindent 8 }}
       {{- end }}
-      {{- with $.job.telorenations }}
+      {{- if $job.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
+        {{ toYaml $job.tolerations | nindent 8 }}
       {{- end }}
       restartPolicy: {{ $job.restartPolicy }}
   backoffLimit: {{ $job.backoffLimit }}
