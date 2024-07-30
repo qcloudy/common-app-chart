@@ -1,0 +1,50 @@
+{{- range $job := $.Values.jobs }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $job.name }}
+  namespace: {{ .Release.Namespace }}
+  {{- with $.job.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  template:
+    spec:
+    {{- if $.job.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ $job.imagePullSecrets }}
+    {{- end }}
+      containers:
+      - image: "{{ $job.image.url }}"
+        imagePullPolicy: {{ $job.image.imagePullPolicy }}
+        name: {{ $job.name }}
+        {{- if or .Values.env }}
+        env:
+        {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
+        {{- end }}
+        {{- if or .Values.envFrom }}
+        envFrom:
+        {{- include "common.tplvalues.render" (dict "value" .Values.envFrom "context" $) | nindent 10 }}
+        {{- end }}
+        {{- if $.job.command }}
+        command: {{ $job.command }}
+        {{- end }}
+        {{- with $.job.resources }}
+        resources:
+{{ toYaml . | indent 10 }}
+        {{- end }}
+      {{- with $.job.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with $.job.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with $.job.telorenations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      restartPolicy: {{ $job.restartPolicy }}
+  backoffLimit: {{ $job.backoffLimit }}

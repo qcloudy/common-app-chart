@@ -599,3 +599,21 @@ kubeVersion:
 ##  maxUnavailable: 3
 podDisruptionBudget:
   enabled: false
+
+## @param jobs - Use to configure jobs
+## Example:
+## jobs:
+##   - name: migration-job
+##     annotations:
+##       "helm.sh/hook": pre-install,pre-upgrade
+##       "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+##     image:
+##       url: https://hub.docker.com/_/nginx
+##       imagePullPolicy: IfNotPresent
+##     env:
+##       - name: DATABASE_URL
+##         value: "mysql://127.0.0.1:3306"
+##     command: ["/bin/sh","-c"]
+##     backoffLimit: 4
+##     restartPolicy: Never
+jobs:
