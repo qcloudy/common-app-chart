@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: 4.0.5
+appVersion: 4.0.6
 description: common-app-chart
 name: common-app-chart
-version: 4.0.5
+version: 4.0.6
 maintainers:
   - name: Okassov Marat
     email: marat@qcloudy.io
