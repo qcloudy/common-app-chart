@@ -1,9 +1,9 @@
-{{- range $job := $.Values.jobs }}
+{{- range $job := .Values.jobs }}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ $job.name }}
-  namespace: {{ $.Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   {{- if $job.annotations }}
   annotations:
     {{- toYaml $job.annotations | nindent 4 }}
@@ -28,11 +28,11 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" $job.envFrom "context" $) | nindent 8 }}
         {{- end }}
         {{- if $job.command }}
-        command: {{ $job.command }}
+        command: {{ toYaml $job.command | nindent 8 }}
         {{- end }}
         {{- if $job.resources }}
         resources:
-          {{ toYaml $job.resources | nindent 8 }}
+          {{ toYaml $job.resources | nindent 10 }}
         {{- end }}
       {{- if $job.nodeSelector }}
       nodeSelector:
