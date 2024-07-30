@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ $job.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ $job.namespace }}
   {{- with $.job.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

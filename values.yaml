@@ -604,6 +604,7 @@ podDisruptionBudget:
 ## Example:
 ## jobs:
 ##   - name: migration-job
+##     namespace: default
 ##     annotations:
 ##       "helm.sh/hook": pre-install,pre-upgrade
 ##       "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
