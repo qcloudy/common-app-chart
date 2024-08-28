@@ -63,6 +63,14 @@ spec:
         env:
         {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
         {{- end }}
+        {{- if or .Values.lifecycle }}
+        lifecycle:
+        {{- include "common.tplvalues.render" (dict "value" .Values.lifecycle "context" $) | nindent 10 }}
+        {{- end }}
+        {{- if or .Values.envFrom }}
+        envFrom:
+        {{- include "common.tplvalues.render" (dict "value" .Values.envFrom "context" $) | nindent 10 }}
+        {{- end }}
         {{- if .Values.containerCommand }}
         command:
           {{- range .Values.containerCommand }}
@@ -113,6 +121,9 @@ spec:
       {{- end }}
       {{- if .Values.affinity }}
       affinity: {{- include "common.tplvalues.render" (dict "value" .Values.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.topologySpreadConstraints "context" $) | nindent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}

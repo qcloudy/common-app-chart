@@ -148,6 +148,8 @@ tolerations: []
 
 affinity: {}
 
+topologySpreadConstraints: {}
+
 ## @param env - Array containing env vars to configure service
 ##
 ## Default envs example:
@@ -165,6 +167,30 @@ affinity: {}
 ##     value: "vault:secrets/data/example#AUTH_TOKEN"
 ##
 env:
+
+## @param lifecycle - Add lifecycle values to the pod
+##
+## lifecycle:
+##   postStart:
+##     exec:
+##       command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+##   preStop:
+##     exec:
+##       command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+lifecycle:
+
+## @param envFrom - Use envFrom to define all of the Secret's or ConfgiMap's data as container environment variables
+##
+## Default envs example:
+##  envFrom:
+##  - secretRef:
+##      name: dev-secret
+##
+##  envFrom:
+##  - configMapRef:
+##      name: dev-cm
+##
+envFrom:
 
 ## @param configMapFile - Filename or matching wildcard pattern
 ## For example:
@@ -575,3 +601,31 @@ extraDeploy: {}
 ## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
 ##
 kubeVersion:
+
+## @param podDisruptionBudget - Use to set PodDisrubtionBudget for pods
+## Example:
+## podDisruptionBudget:
+##  enabled: true
+##  minAvailable: 1
+##  maxUnavailable: 3
+podDisruptionBudget:
+  enabled: false
+
+## @param jobs - Use to configure jobs
+## Example:
+## jobs:
+##   - name: migration-job
+##     namespace: default
+##     annotations:
+##       "helm.sh/hook": pre-install,pre-upgrade
+##       "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+##     image:
+##       url: https://hub.docker.com/_/nginx
+##       imagePullPolicy: IfNotPresent
+##     env:
+##       - name: DATABASE_URL
+##         value: "mysql://127.0.0.1:3306"
+##     command: ["/bin/sh","-c"]
+##     backoffLimit: 4
+##     restartPolicy: Never
+jobs:
