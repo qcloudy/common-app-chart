@@ -168,6 +168,17 @@ topologySpreadConstraints: {}
 ##
 env:
 
+## @param lifecycle - Add lifecycle values to the pod
+##
+## lifecycle:
+##   postStart:
+##     exec:
+##       command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+##   preStop:
+##     exec:
+##       command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+lifecycle:
+
 ## @param envFrom - Use envFrom to define all of the Secret's or ConfgiMap's data as container environment variables
 ##
 ## Default envs example:
