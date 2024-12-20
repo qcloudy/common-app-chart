@@ -166,6 +166,11 @@ affinity: {}
 ##
 env:
 
+## @param envFromCm - Array containing env vars to configure service
+##
+envFromCm:
+  enabled: false
+
 ## @param configMapFile - Filename or matching wildcard pattern
 ## For example:
 ## configMapFile: "application.yml"

@@ -63,6 +63,11 @@ spec:
         env:
         {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 10 }}
         {{- end }}
+        {{- if or .Values.envFrom.enabled }}
+        envFromCm:
+        - configMapRef:
+            name: {{ include "servicename.fullname" . }}-config
+        {{- end }}
         {{- if .Values.containerCommand }}
         command:
           {{- range .Values.containerCommand }}
@@ -119,5 +124,8 @@ spec:
       {{- end }}
       {{- if .Values.initContainers }}
       initContainers: {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.sidecars }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.sidecars "context" $) | nindent 8 }}
       {{- end }}
 {{- end }}
